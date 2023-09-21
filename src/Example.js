@@ -1,6 +1,6 @@
 import { NavLink, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
-import { shallow } from "zustand";
+import { shallow } from "zustand/shallow";
 
 import { useTestStore } from "./store";
 
