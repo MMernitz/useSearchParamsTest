@@ -8,7 +8,7 @@ export default function App() {
       <h2>Start editing to see some magic happen!</h2>
       <div>
         <button type="button">
-          <NavLink to="/example?q=test">To the example component</NavLink>
+          <NavLink to="/example">To the example component</NavLink>
         </button>
       </div>
     </div>
