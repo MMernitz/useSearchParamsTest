@@ -23,9 +23,7 @@ export default function Example() {
   const order = searchParams.get("sort");
 
   useEffect(() => {
-    if (q !== "test") {
-      setInputValue(q);
-    }
+    setInputValue(q);
     setSort(order);
   }, [q, order]);
 
