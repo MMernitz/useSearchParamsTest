@@ -6,24 +6,24 @@ import { useTestStore } from "./store";
 
 export default function Example() {
   const [searchParams, setSearchParams] = useSearchParams({
-    q: "",
-    sort: "canonical"
+    q: "test",
+    sort: "canonical",
   });
   const { inputValue, sort, setInputValue, setSort } = useTestStore(
     (state) => ({
       inputValue: state.inputValue,
       sort: state.sort,
       setInputValue: state.setInputValue,
-      setSort: state.setSort
+      setSort: state.setSort,
     }),
-    shallow
+    shallow,
   );
 
   const q = searchParams.get("q");
   const order = searchParams.get("sort");
 
   useEffect(() => {
-    if (q !== null) {
+    if (q !== "test") {
       setInputValue(q);
     }
     setSort(order);
