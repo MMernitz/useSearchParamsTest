@@ -5,7 +5,11 @@ import { shallow } from "zustand/shallow";
 import { useTestStore } from "./store";
 
 export default function Example() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams({
+    q: "test",
+    sort: "canonical",
+    filters: "",
+  });
   const navigate = useNavigate();
   const {
     inputValue,
@@ -31,8 +35,8 @@ export default function Example() {
   );
 
   useEffect(() => {
-    const q = searchParams.get("q") || "test"; // Provide a default value if "q" is missing
-    const order = searchParams.get("sort") || "canonical"; // Provide a default value if "sort" is missing
+    const q = searchParams.get("q"); // Provide a default value if "q" is missing
+    const order = searchParams.get("sort"); // Provide a default value if "sort" is missing
     const facetString = decodeURIComponent(searchParams.get("filters"));
     let facets = {};
     try {
@@ -66,13 +70,13 @@ export default function Example() {
   }
 
   function handleButtonClick() {
-    const updatedSearchParams = new URLSearchParams();
-    updatedSearchParams.set("q", inputValue);
-    updatedSearchParams.set("sort", sort);
-    updatedSearchParams.set("filters", JSON.stringify(filters));
-
-    // Use the navigate function to update the URL
-    navigate({ search: updatedSearchParams.toString() });
+    setSearchParams({
+      q: inputValue,
+      sort: sort,
+      filters: JSON.stringify(filters),
+    });
+    console.log("searchParams: ", searchParams.toString());
+    setSearchParams(searchParams);
   }
 
   return (
