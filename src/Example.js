@@ -14,22 +14,40 @@ export default function Example() {
   const {
     inputValue,
     sort,
+    scribes,
+    institutes,
+    books,
     filters,
+    selectedScribes,
+    selectedInstitutes,
+    selectedBooks,
     setInputValue,
     setSort,
     setScribes,
     setInstitutes,
     setBooks,
+    setSelectedScribes,
+    setSelectedInstitutes,
+    setSelectedBooks,
   } = useTestStore(
     (state) => ({
       inputValue: state.inputValue,
       sort: state.sort,
+      scribes: state.scribes,
+      institutes: state.institutes,
+      books: state.books,
       filters: state.filters,
+      selectedScribes: state.selectedScribes,
+      selectedInstitutes: state.selectedInstitutes,
+      selectedBooks: state.selectedBooks,
       setInputValue: state.setInputValue,
       setSort: state.setSort,
       setScribes: state.setScribes,
       setInstitutes: state.setInstitutes,
       setBooks: state.setBooks,
+      setSelectedScribes: state.setSelectedScribes,
+      setSelectedInstitutes: state.setSelectedInstitutes,
+      setSelectedBooks: state.setSelectedBooks,
     }),
     shallow,
   );
@@ -44,8 +62,9 @@ export default function Example() {
       setInputValue(q);
       setSort(order);
       setScribes(facets.scribes);
-      setInstitutes(facets.institutes);
-      setBooks(facets.books);
+      setSelectedInstitutes(facets.institutes);
+      setSelectedBooks(facets.books);
+      setSelectedScribes(facets.scribes);
     } catch (error) {
       // Handle invalid JSON or missing parameters gracefully
       console.error("Error parsing filters:", error);
@@ -65,17 +84,48 @@ export default function Example() {
     setBooks,
   ]);
 
+  useEffect(() => {
+    console.log("selectedScribes: ", selectedScribes);
+    console.log("selectedInstitutes: ", selectedInstitutes);
+    console.log("selectedBooks: ", selectedBooks);
+    console.log("searchParams: ", searchParams.toString());
+  }, [selectedScribes, selectedInstitutes, selectedBooks, searchParams]);
+
   function handleInputChange(event) {
     setInputValue(event.target.value);
   }
 
   function handleButtonClick() {
+    setScribes(selectedScribes);
+    setInstitutes(selectedInstitutes);
+    setBooks(selectedBooks);
     setSearchParams({
       q: inputValue,
       sort: sort,
       filters: JSON.stringify(filters),
     });
-    console.log("searchParams: ", searchParams.toString());
+  }
+
+  function handleCheckBoxClick(id, filterType) {
+    if (filterType === "scribes") {
+      if (selectedScribes.includes(id)) {
+        setSelectedScribes(selectedScribes.filter((item) => item !== id));
+      } else {
+        setSelectedScribes([...selectedScribes, id]);
+      }
+    } else if (filterType === "institutes") {
+      if (selectedInstitutes.includes(id)) {
+        setSelectedInstitutes(selectedInstitutes.filter((item) => item !== id));
+      } else {
+        setSelectedInstitutes([...selectedInstitutes, id]);
+      }
+    } else if (filterType === "books") {
+      if (selectedBooks.includes(id)) {
+        setSelectedBooks(selectedBooks.filter((item) => item !== id));
+      } else {
+        setSelectedBooks([...selectedBooks, id]);
+      }
+    }
   }
 
   return (
@@ -92,14 +142,70 @@ export default function Example() {
               <p>All the filters: </p>
               {/* The following mappings are iterating over the filters keys and iterate over the keys values in order to print them*/}
               {/** p may not be a child of p */}
-              {Object.keys(filters).map((filter) => (
+              <div>
+                scribes:
+                {scribes.map((scribe) => (
+                  <label key={scribe}>
+                    {scribe}
+                    <input
+                      type="checkbox"
+                      checked={selectedScribes.includes(scribe) ? true : false}
+                      onChange={() => handleCheckBoxClick(scribe, "scribes")}
+                    />{" "}
+                  </label>
+                ))}
+              </div>
+              <div>
+                institutes:
+                {institutes.map((institute) => (
+                  <label key={institute}>
+                    {institute}
+                    <input
+                      type="checkbox"
+                      checked={
+                        selectedInstitutes.includes(institute) ? true : false
+                      }
+                      onChange={() =>
+                        handleCheckBoxClick(institute, "institutes")
+                      }
+                    />
+                  </label>
+                ))}
+              </div>
+              <div>
+                books:
+                {books.map((book) => (
+                  <label key={book}>
+                    {book}
+                    <input
+                      type="checkbox"
+                      checked={selectedBooks.includes(book) ? true : false}
+                      onChange={() => handleCheckBoxClick(book, "books")}
+                    />
+                  </label>
+                ))}
+              </div>
+              {/* {Object.keys(filters).map((filter) => (
                 <div key={filter}>
                   {filter}:{" "}
                   {filters[filter].map((item) => (
-                    <p key={item}>{item}</p>
+                    <label key={item}>
+                      <input
+                        type="checkbox"
+                        checked={
+                          selectedScribes.includes(item) ||
+                          selectedInstitutes.includes(item) ||
+                          selectedBooks.includes(item)
+                            ? true
+                            : false
+                        }
+                        onChange={() => handleCheckBoxClick(item)}
+                      />
+                      {item}
+                    </label>
                   ))}
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
         )}
