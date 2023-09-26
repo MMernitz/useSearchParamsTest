@@ -1,4 +1,4 @@
-import { Link, Outlet, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { shallow } from "zustand/shallow";
 
@@ -204,7 +204,6 @@ export default function Example() {
       <button>
         <Link to="/">To the Homepage</Link>
       </button>
-      <Outlet />
     </div>
   );
 }
