@@ -1,16 +1,16 @@
-import { Link, Outlet, useSearchParams, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Link, Outlet, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { shallow } from "zustand/shallow";
 
 import { useTestStore } from "./store";
 
 export default function Example() {
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams({
     q: "test",
     sort: "canonical",
     filters: "",
   });
-  const navigate = useNavigate();
   const {
     inputValue,
     sort,
@@ -93,6 +93,16 @@ export default function Example() {
     console.log("searchParams: ", searchParams.toString());
   }, [selectedScribes, selectedInstitutes, selectedBooks, searchParams]);
 
+  useEffect(() => {
+    if (buttonClicked) {
+      setSearchParams({
+        q: inputValue,
+        sort: sort,
+        filters: JSON.stringify(filters),
+      });
+      setButtonClicked(false);
+    }
+  }, [buttonClicked]);
   function handleInputChange(event) {
     setInputValue(event.target.value);
   }
@@ -101,11 +111,7 @@ export default function Example() {
     setScribes(selectedScribes);
     setInstitutes(selectedInstitutes);
     setBooks(selectedBooks);
-    setSearchParams({
-      q: inputValue,
-      sort: sort,
-      filters: JSON.stringify(filters),
-    });
+    setButtonClicked(true);
   }
 
   function handleCheckBoxClick(id, filterType) {
@@ -187,27 +193,6 @@ export default function Example() {
                   </label>
                 ))}
               </div>
-              {/* {Object.keys(filters).map((filter) => (
-                <div key={filter}>
-                  {filter}:{" "}
-                  {filters[filter].map((item) => (
-                    <label key={item}>
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedScribes.includes(item) ||
-                          selectedInstitutes.includes(item) ||
-                          selectedBooks.includes(item)
-                            ? true
-                            : false
-                        }
-                        onChange={() => handleCheckBoxClick(item)}
-                      />
-                      {item}
-                    </label>
-                  ))}
-                </div>
-              ))} */}
             </div>
           </div>
         )}
