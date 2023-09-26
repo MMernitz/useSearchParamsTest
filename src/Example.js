@@ -62,6 +62,8 @@ export default function Example() {
       setInputValue(q);
       setSort(order);
       setScribes(facets.scribes);
+      setInstitutes(facets.institutes);
+      setBooks(facets.books);
       setSelectedInstitutes(facets.institutes);
       setSelectedBooks(facets.books);
       setSelectedScribes(facets.scribes);
