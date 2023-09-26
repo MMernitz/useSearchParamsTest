@@ -76,7 +76,6 @@ export default function Example() {
       filters: JSON.stringify(filters),
     });
     console.log("searchParams: ", searchParams.toString());
-    setSearchParams(searchParams);
   }
 
   return (
