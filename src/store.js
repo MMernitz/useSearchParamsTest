@@ -3,14 +3,15 @@ import { create } from "zustand";
 export const useTestStore = create((set) => ({
   inputValue: "",
   sort: "canonical",
-  scribes: ["a", "b", "c"],
-  institutes: ["bl", "ubl"],
-  books: ["me", "ge", "de"],
+  scribes: [],
+  institutes: [],
+  books: [],
   filters: {
     scribes: [],
     institutes: [],
     books: [],
   },
+  loading: true,
   selectedScribes: [],
   selectedInstitutes: [],
   selectedBooks: [],
@@ -29,4 +30,9 @@ export const useTestStore = create((set) => ({
   setSelectedInstitutes: (newInsts) =>
     set(() => ({ selectedInstitutes: newInsts })),
   setSelectedBooks: (newBooks) => set(() => ({ selectedBooks: newBooks })),
+  setLoading: (newState) => set(() => ({ loading: newState })),
+  setScribesData: (newScribes) => set(() => ({ scribes: newScribes })),
+  setInstitutesData: (newInstitutes) =>
+    set(() => ({ institutes: newInstitutes })),
+  setBooksData: (newBooks) => set(() => ({ books: newBooks })),
 }));
